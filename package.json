@@ -1,0 +1,32 @@
+{
+  "name": "shipping-tracker",
+  "version": "1.0.3",
+  "description": "Shipping and delivery tracking service",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "test": "vitest run",
+    "lint": "eslint src/",
+    "db:push": "drizzle-kit push"
+  },
+  "engines": { "node": "20.x" },
+  "dependencies": {
+    "fastify": "^4.25.2",
+    "@fastify/cors": "^8.5.0",
+    "drizzle-orm": "^0.29.3",
+    "postgres": "^3.4.3",
+    "zod": "^3.22.4",
+    "ioredis": "^5.3.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "tsx": "^4.7.0",
+    "vitest": "^1.2.0",
+    "drizzle-kit": "^0.20.10",
+    "eslint": "^8.56.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0"
+  }
+}
