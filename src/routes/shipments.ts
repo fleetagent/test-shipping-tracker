@@ -4,7 +4,7 @@ import { shipments } from "../db/schema";
 import { eq } from "drizzle-orm";
 
 export async function shipmentRoutes(app: FastifyInstance) {
-  app.get("/", async (request, reply) => {
+  app.get("/", async () => {
     const rows = await db.select().from(shipments).limit(50);
     return { shipments: rows };
   });
@@ -16,7 +16,7 @@ export async function shipmentRoutes(app: FastifyInstance) {
   });
 
   app.post("/", async (request, reply) => {
-    const body = request.body as any;
+    const body = request.body as { orderId: string; carrier: string; trackingNumber: string };
     const [created] = await db.insert(shipments).values({
       orderId: body.orderId,
       carrier: body.carrier,
@@ -26,8 +26,8 @@ export async function shipmentRoutes(app: FastifyInstance) {
     return reply.status(201).send(created);
   });
 
-  app.patch<{ Params: { id: string } }>("/:id/status", async (request, reply) => {
-    const { status } = request.body as any;
+  app.patch<{ Params: { id: string } }>("/:id/status", async (request) => {
+    const { status } = request.body as { status: string };
     const [updated] = await db.update(shipments)
       .set({ status, updatedAt: new Date() })
       .where(eq(shipments.id, request.params.id))
