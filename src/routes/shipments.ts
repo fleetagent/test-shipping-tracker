@@ -15,8 +15,8 @@ export async function shipmentRoutes(app: FastifyInstance) {
     return row;
   });
 
-  app.post("/", async (request, reply) => {
-    const body = request.body as any;
+  app.post<{ Body: { orderId: string; carrier: string; trackingNumber: string } }>("/", async (request, reply) => {
+    const body = request.body;
     const [created] = await db.insert(shipments).values({
       orderId: body.orderId,
       carrier: body.carrier,
@@ -26,8 +26,8 @@ export async function shipmentRoutes(app: FastifyInstance) {
     return reply.status(201).send(created);
   });
 
-  app.patch<{ Params: { id: string } }>("/:id/status", async (request, reply) => {
-    const { status } = request.body as any;
+  app.patch<{ Params: { id: string }; Body: { status: string } }>("/:id/status", async (request, reply) => {
+    const { status } = request.body;
     const [updated] = await db.update(shipments)
       .set({ status, updatedAt: new Date() })
       .where(eq(shipments.id, request.params.id))
